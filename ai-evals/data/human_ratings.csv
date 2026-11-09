@@ -1,0 +1,17 @@
+case_id,reviewer_id,label
+case-01,reviewer-1,pass
+case-01,reviewer-2,pass
+case-02,reviewer-1,pass
+case-02,reviewer-2,pass
+case-03,reviewer-1,fail
+case-03,reviewer-2,fail
+case-04,reviewer-1,pass
+case-04,reviewer-2,pass
+case-05,reviewer-1,fail
+case-05,reviewer-2,fail
+case-06,reviewer-1,pass
+case-06,reviewer-2,pass
+case-07,reviewer-1,pass
+case-07,reviewer-2,fail
+case-08,reviewer-1,fail
+case-08,reviewer-2,fail
