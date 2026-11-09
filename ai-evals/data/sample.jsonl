@@ -1,0 +1,8 @@
+{"id":"case-01","question":"What is 2 + 2?","reference_answer":"4","answer":"4","expected_label":"pass","business_impact_usd":0}
+{"id":"case-02","question":"What is the capital of France?","reference_answer":"Paris","answer":"Paris","expected_label":"pass","business_impact_usd":0}
+{"id":"case-03","question":"What is 9 * 7?","reference_answer":"63","answer":"62","expected_label":"fail","business_impact_usd":80}
+{"id":"case-04","question":"Which planet is known as the Red Planet?","reference_answer":"Mars","answer":"Mars","expected_label":"pass","business_impact_usd":0}
+{"id":"case-05","question":"What is the boiling point of water at sea level in Celsius?","reference_answer":"100 degrees Celsius","answer":"90 degrees Celsius","expected_label":"fail","business_impact_usd":120}
+{"id":"case-06","question":"What is the largest ocean on Earth?","reference_answer":"Pacific Ocean","answer":"Pacific Ocean","expected_label":"pass","business_impact_usd":0}
+{"id":"case-07","question":"How many sides does a hexagon have?","reference_answer":"6","answer":"six","expected_label":"pass","business_impact_usd":15}
+{"id":"case-08","question":"What is the chemical symbol for gold?","reference_answer":"Au","answer":"Ag","expected_label":"fail","business_impact_usd":200}
