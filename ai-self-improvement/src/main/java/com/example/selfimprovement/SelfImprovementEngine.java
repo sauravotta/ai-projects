@@ -107,7 +107,8 @@ public final class SelfImprovementEngine {
             double trainingDelta,
             Metrics trainingMetrics,
             Metrics baselineTrainingMetrics,
-            String recipe) {
+            String recipe,
+            String rationale) {
     }
 
     public record ChangeGate(
@@ -122,7 +123,8 @@ public final class SelfImprovementEngine {
             String currentRecipe,
             String proposedRecipe,
             Map<String, Double> metaTrainMeanScores,
-            double metaTrainDelta) {
+            double metaTrainDelta,
+            String rationale) {
     }
 
     public record RecipeGate(
@@ -407,6 +409,17 @@ public final class SelfImprovementEngine {
             List<EvaluationCase> trainingCases,
             String recipe,
             Config config) {
+        return eligibleChangeProposals(trainingCases, recipe, config).stream()
+                .max(Comparator.comparingDouble(ChangeProposal::trainingScore)
+                        .thenComparingDouble(proposal -> -proposal.trainingMetrics().simulatedInferenceCostUsd())
+                        .thenComparing(ChangeProposal::variant))
+                .orElse(null);
+    }
+
+    public static List<ChangeProposal> eligibleChangeProposals(
+            List<EvaluationCase> trainingCases,
+            String recipe,
+            Config config) {
         Metrics baselineMetrics = evaluate(trainingCases, BASELINE);
         double baselineScore = selectorScore(baselineMetrics, trainingCases, recipe);
         List<ChangeProposal> proposals = new ArrayList<>();
@@ -432,14 +445,35 @@ public final class SelfImprovementEngine {
                         score - baselineScore,
                         metrics,
                         baselineMetrics,
-                        recipe));
+                        recipe,
+                        "Highest-scoring eligible candidate under the configured offline selector."));
             }
         }
         return proposals.stream()
-                .max(Comparator.comparingDouble(ChangeProposal::trainingScore)
-                        .thenComparingDouble(proposal -> -proposal.trainingMetrics().simulatedInferenceCostUsd())
+                .sorted(Comparator.comparingDouble(ChangeProposal::trainingScore).reversed()
+                        .thenComparingDouble(proposal -> proposal.trainingMetrics().simulatedInferenceCostUsd())
                         .thenComparing(ChangeProposal::variant))
-                .orElse(null);
+                .toList();
+    }
+
+    public static ChangeProposal proposalForVariant(
+            List<ChangeProposal> eligibleProposals,
+            String variant,
+            String rationale) {
+        return eligibleProposals.stream()
+                .filter(proposal -> proposal.variant().equals(variant))
+                .findFirst()
+                .map(proposal -> new ChangeProposal(
+                        proposal.variant(),
+                        proposal.change(),
+                        proposal.trainingScore(),
+                        proposal.trainingDelta(),
+                        proposal.trainingMetrics(),
+                        proposal.baselineTrainingMetrics(),
+                        proposal.recipe(),
+                        rationale))
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Improver selected a candidate that is not eligible on training data: " + variant));
     }
 
     public static BootstrapDelta bootstrapDelta(
@@ -533,6 +567,22 @@ public final class SelfImprovementEngine {
     }
 
     public static RecipeProposal proposeRecipe(List<RecipeCase> metaTrainingCases, String currentRecipe) {
+        Map<String, Double> means = recipeMeans(metaTrainingCases);
+        String proposed = RECIPES.stream()
+                .max(Comparator.comparingDouble((String recipe) -> means.get(recipe))
+                        .thenComparing(Comparator.naturalOrder()))
+                .orElseThrow();
+        if (proposed.equals(currentRecipe) || means.get(proposed) <= means.get(currentRecipe)) {
+            return null;
+        }
+        return recipeProposalForChoice(
+                metaTrainingCases,
+                currentRecipe,
+                proposed,
+                "Highest-scoring recipe on meta-training data.");
+    }
+
+    public static Map<String, Double> recipeMeans(List<RecipeCase> metaTrainingCases) {
         Map<String, Double> means = new LinkedHashMap<>();
         for (String recipe : RECIPES) {
             double mean = metaTrainingCases.stream()
@@ -541,18 +591,28 @@ public final class SelfImprovementEngine {
                     .orElseThrow();
             means.put(recipe, mean);
         }
-        String proposed = RECIPES.stream()
-                .max(Comparator.comparingDouble((String recipe) -> means.get(recipe))
-                        .thenComparing(Comparator.naturalOrder()))
-                .orElseThrow();
+        return Map.copyOf(means);
+    }
+
+    public static RecipeProposal recipeProposalForChoice(
+            List<RecipeCase> metaTrainingCases,
+            String currentRecipe,
+            String proposed,
+            String rationale) {
+        if (!RECIPES.contains(proposed)) {
+            throw new IllegalArgumentException("Improver selected an unknown recipe: " + proposed);
+        }
+        Map<String, Double> means = recipeMeans(metaTrainingCases);
         if (proposed.equals(currentRecipe) || means.get(proposed) <= means.get(currentRecipe)) {
-            return null;
+            throw new IllegalArgumentException(
+                    "Improver selected a recipe that does not outperform the current recipe on meta-training data");
         }
         return new RecipeProposal(
                 currentRecipe,
                 proposed,
-                Map.copyOf(means),
-                means.get(proposed) - means.get(currentRecipe));
+                means,
+                means.get(proposed) - means.get(currentRecipe),
+                rationale);
     }
 
     public static RecipeGate gateRecipe(

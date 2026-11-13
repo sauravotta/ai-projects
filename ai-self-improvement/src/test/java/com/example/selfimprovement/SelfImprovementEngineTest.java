@@ -115,6 +115,8 @@ class SelfImprovementEngineTest {
         assertEquals(1, reports.size());
         JsonNode report = new ObjectMapper().readTree(reports.getFirst().toFile());
         assertEquals("fully local deterministic simulation", report.path("mode").asText());
+        assertFalse(report.path("llm").path("enabled").asBoolean());
+        assertEquals(0, report.path("llm").path("calls").size());
         assertEquals("kept", report.path("improvement").path("status").asText());
         assertTrue(report.path("improvement").path("human_approved").asBoolean());
         assertEquals("kept", report.path("recursive_recipe_tuning").path("status").asText());
