@@ -1,0 +1,12 @@
+{"id":"meta-train-01","split":"meta_train","recipe_scores":{"accuracy_first":0.72,"business_aware":0.84}}
+{"id":"meta-train-02","split":"meta_train","recipe_scores":{"accuracy_first":0.75,"business_aware":0.88}}
+{"id":"meta-train-03","split":"meta_train","recipe_scores":{"accuracy_first":0.70,"business_aware":0.83}}
+{"id":"meta-train-04","split":"meta_train","recipe_scores":{"accuracy_first":0.78,"business_aware":0.89}}
+{"id":"meta-train-05","split":"meta_train","recipe_scores":{"accuracy_first":0.73,"business_aware":0.86}}
+{"id":"meta-train-06","split":"meta_train","recipe_scores":{"accuracy_first":0.76,"business_aware":0.87}}
+{"id":"meta-heldout-01","split":"meta_heldout","recipe_scores":{"accuracy_first":0.71,"business_aware":0.82}}
+{"id":"meta-heldout-02","split":"meta_heldout","recipe_scores":{"accuracy_first":0.74,"business_aware":0.85}}
+{"id":"meta-heldout-03","split":"meta_heldout","recipe_scores":{"accuracy_first":0.69,"business_aware":0.82}}
+{"id":"meta-heldout-04","split":"meta_heldout","recipe_scores":{"accuracy_first":0.77,"business_aware":0.89}}
+{"id":"meta-heldout-05","split":"meta_heldout","recipe_scores":{"accuracy_first":0.73,"business_aware":0.84}}
+{"id":"meta-heldout-06","split":"meta_heldout","recipe_scores":{"accuracy_first":0.75,"business_aware":0.86}}

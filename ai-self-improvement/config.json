@@ -1,0 +1,15 @@
+{
+  "permitted_models": [
+    "local-demo-small",
+    "local-demo-strong"
+  ],
+  "minimum_accuracy": 0.65,
+  "minimum_category_accuracy": 0.5,
+  "maximum_category_regression": 0.15,
+  "minimum_improvement": 0.05,
+  "maximum_evaluation_budget_usd": 0.5,
+  "bootstrap_samples": 3000,
+  "confidence_level": 0.9,
+  "initial_improver_recipe": "accuracy_first",
+  "minimum_recipe_score": 0.6
+}
