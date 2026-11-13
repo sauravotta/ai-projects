@@ -1,0 +1,7 @@
+[
+  {"id":"severity", "question":"Who must be paged after a complete production outage is confirmed, and how quickly?", "relevant":["incident:1"], "facts":[["incident commander"],["10 minutes"]]},
+  {"id":"refund", "question":"What is the refund window for annual subscriptions and which team handles requests?", "relevant":["refunds:1"], "facts":[["14 days"],["billing"]]},
+  {"id":"retention", "question":"How long are closed support tickets and backups retained?", "relevant":["retention:1","retention:2"], "facts":[["18 months"],["30 days"]]},
+  {"id":"onboarding", "question":"Who owns enterprise onboarding and how long does the program last?", "relevant":["onboarding:1"], "facts":[["customer success manager"],["30-day","30 day","30 days"]]},
+  {"id":"access", "question":"How often is privileged access reviewed and who reviews it?", "relevant":["security:1"], "facts":[["90 days"],["security team"]]}
+]
