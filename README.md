@@ -12,3 +12,4 @@ A collection of small AI projects. Each lives in its own folder with its own REA
 | [ai-evals](./ai-evals) | Local-first evaluation POC: direct checks, optional LLM judge, human review, metrics, and traces |
 | [ai-self-improvement](./ai-self-improvement) | Java POC: optional OpenRouter improver, human approval, held-out gates, and recursive recipe tuning |
 | [ai-agentic-rag](./ai-agentic-rag) | Python agentic RAG: local semantic search, OpenRouter agent, and retrieval evaluations |
+| [ai-durable-state](./ai-durable-state) | Python durable swarm demo: SQLite recovery, local human review, and optional OpenRouter |
