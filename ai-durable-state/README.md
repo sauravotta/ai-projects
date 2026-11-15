@@ -2,7 +2,7 @@
 
 This local-first Python demo processes a batch of fictional customer-support requests using **durable state**, **human-in-the-loop review**, and a **swarm** of bounded parallel worker copies. A local web page shows progress and lets a person approve or reject risky or uncertain items. Actions are simulated records in SQLite: no real email, refund, deletion, or account change occurs.
 
-The Week 2 summary describes LangGraph concepts. This demo deliberately uses a custom SQLite state machine rather than LangGraph: it demonstrates comparable ideas, **not** the `interrupt`, `Command`, `Send`, or LangGraph checkpoint APIs.
+ This demo deliberately uses a custom SQLite state machine rather than LangGraph: it demonstrates comparable ideas, **not** the `interrupt`, `Command`, `Send`, or LangGraph checkpoint APIs.
 
 ## What happens
 
